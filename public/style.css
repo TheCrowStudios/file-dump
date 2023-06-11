@@ -1,0 +1,140 @@
+body {
+    background: #323232;
+    color: #ffffff;
+    max-width: 1000px;
+    margin: auto;
+    margin-bottom: 200px;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a {
+    color: deepskyblue;
+    text-decoration: none;
+    font-size: large;
+}
+
+a:hover {
+    color: beige;
+    text-decoration: underline;
+}
+
+form > div > input {
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #323232;
+    color: #ffffff;
+    padding: 10px 20px 10px 20px;
+    border-color: #ffffff;
+    border-style: ridge;
+    border-width: 1px;
+}
+
+button:hover {
+    background-color: #424242;
+}
+
+#posts, #postFiles {
+    margin-top: 20px;
+}
+
+.post {
+    margin-bottom: 10px;
+}
+
+.postFileName {
+    color: #cccccc;
+}
+
+.fileSize {
+    color: #cccccc;
+}
+
+.textGrayed {
+    color: #cccccc;
+}
+
+.postActions {
+    font-size: small;
+}
+
+.deletePostForm {
+    
+}
+
+.deletePost {
+    padding: 0px;
+    border: none;
+}
+
+#title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#title > a {
+    color: white;
+    margin: 0px 10px 0px 58px;
+}
+
+#title > a:hover {
+    text-decoration: none;
+}
+
+#information {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#writtenInJavaScript {
+    color: #cccccc;
+}
+
+#developer {
+    margin-top: 20px;
+}
+
+#donate {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#crypto {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 20px;
+    max-width: 480px;
+    overflow-wrap: break-word;
+    font-size: small;
+}
+
+.formCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#account {
+    float: right;
+}

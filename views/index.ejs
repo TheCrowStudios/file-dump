@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File dump</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/directory_open_file_mydocs-4.png">
+</head>
+<body>
+    <% postOpen = false %>
+    <%- include("_title.ejs") %>
+    <h2>Dump all your files!</h2>
+    <div id="toolbar">
+        <a href="post">Create a post</a>
+        <a href="/about" id="about">About</a>
+        <% if (user) { %>
+            <a href="/user/<%= user.username %>" id="account"><%= user.username %></a>
+        <% } else { %>
+            <a href="login" id="account">Login</a>
+        <% } %>
+    </div>
+
+    <%- include("_posts.ejs") %>
+
+    <% if (page > 1) { %>
+        <a href="/?page=<%= page - 1 %>">Prev</a>
+    <% } %>
+
+    <% if (page < maxPage) { %>
+        <a href="/?page=<%= page + 1 %>">Next</a>
+    <% } %>
+
+    <%- include("_donate.ejs") %>
+    <%- include("_information.ejs") %>
+</body>
+</html>

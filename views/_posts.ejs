@@ -1,0 +1,40 @@
+<div id="posts">
+    <% for (let i = 0; i < posts.length; i++) { %>
+        <div class="post">
+            <div class="postTitle">
+                <%= posts[i].title %>
+            </div>
+    
+            <div class="postCreated textGrayed">
+                <%= posts[i].created.toLocaleString() %>
+            </div>
+    
+            <div class="postFiles textGrayed">
+                Files:
+                <%= posts[i].files %>
+            </div>
+    
+            <div class="postViews">
+                Views:
+                <%= posts[i].views %>
+            </div>
+    
+            <div class="postActions">
+                <a href="/post/<%= posts[i].id %>" class="showPost">Show</a>
+    
+                <% if (user) { %>
+                    <% if (user.admin) { %>
+                        <form action="/post/<%= posts[i].id %>?_method=DELETE" method="POST" class="deletePostForm">
+                            <button type="submit" class="deletePost">Delete</button>
+                        </form>
+                    <% } %>
+                <% } %>
+    
+                    <div>
+                        Posted by:
+                        <a href="/user/<%= posts[i].username %>" class="postCreatorUsername"><%= posts[i].username %></a>
+                    </div>
+            </div>
+        </div>
+    <% } %>
+</div>

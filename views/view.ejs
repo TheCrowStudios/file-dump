@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File dump</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/directory_open_file_mydocs-4.png">
+</head>
+<body>
+    <% postOpen = true %>
+    <%- include("_title.ejs") %>
+    <h2><%= post.title %></h2>
+    <%= post.created.toLocaleString() %>
+    <div>
+        Posted by:
+        <a href="/user/<%= post.username %>"><%= post.username %></a>
+    </div>
+
+    <div id="postViews">
+        Views:
+        <%= post.views %>
+    </div>
+
+    <% if (post.description) { %>
+        <div id="postDescription">
+            Description:
+            <%= post.description %>
+        </div>
+    <% } %>
+
+    <% if (files) { %>
+        <div id="postFiles">
+            Files:
+            <% for (let i = 0; i < files.length; i++) { %>
+                <div class="file">
+                    <%= files[i].originalFileName %>
+
+                    <div class="fileSize">
+                        <%= files[i].size %>
+                        MB
+                    </div>
+
+                    <div>
+                        <a href="/user_uploads/<%= files[i].fileName %>">Show</a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    <% } %>
+
+    <%- include("_information.ejs") %>
+</body>
+</html>

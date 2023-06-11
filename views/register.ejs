@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File dump</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/directory_open_file_mydocs-4.png">
+</head>
+<body>
+    <h1>Register</h1>
+    <form enctype="multipart/form-data" action="/register" method="POST" id="register" class="formCenter">
+        <label for="username">Username</label>
+
+        <div>
+            <input required type="text" name="username" id="username" maxlength="20" value="<%= account.username %>">
+        </div>
+
+        <label for="password">Password</label>
+
+        <div>
+            <input required type="password" name="password" id="password" maxlength="100" value="<%= account.password %>">
+        </div>
+
+        <label for="confirmPassword">Confirm password</label>
+        
+        <div>
+            <input required type="password" name="confirmPassword" id="confirmPassword" maxlength="100" value="<%= account.confirmPassword %>">
+        </div>
+        
+        <div>
+            <%= error %>
+        </div>
+
+        <div>
+            <button type="submit">Register</button>
+        </div>
+
+        <a href="/login">Login</a>
+    </form>
+</body>
+</html>

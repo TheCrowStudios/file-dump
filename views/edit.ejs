@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File dump</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/directory_open_file_mydocs-4.png">
+</head>
+<body>
+    <% postOpen = false %>
+    <%- include("_title.ejs") %>
+    <h2><%= account.username %></h2>
+    
+    <div id="accountDetails">
+        Account details
+        <div>
+            Username: <%= account.username %>
+        </div>
+        <div>
+            Created: <%= account.created.toLocaleString() %>
+        </div>
+        
+        <form action="/user/<%= account.username %>/edit" method="POST">
+            <label for="about">About:</label>
+            <div>
+                <textarea name="about" id="about" cols="30" rows="10"><%= account.about %></textarea>
+            </div>
+            
+            <button type="submit">Save</button>
+            <a href="/user/<%= account.username %>">Cancel</a>
+        </form>
+    </div>
+
+    <%- include("_information.ejs") %>
+</body>
+</html>
