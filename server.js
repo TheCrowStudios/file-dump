@@ -11,7 +11,7 @@ require("dotenv").config()
 const userUploadsPath = process.env.USERUPLOADSDIR
 const maxPostsPerPage = Number.parseInt(process.env.MAXPOSTSPERPAGE)
 const timeBetweenPosts = Number.parseInt(process.env.TIMEBETWEENPOSTS)
-const db = new (require("./db"))()
+const db = new (require("./db"))(process.env.DB)
 const sessionStore = new (require("express-mysql-session")(session))({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
 
 let CreateLog;

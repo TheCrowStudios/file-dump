@@ -1,27 +1,31 @@
-const Account = require("./models/account")
-const Post = require("./models/post")
-const UploadedFile = require("./models/uploadedFile")
+let Account
+let Post
+let UploadedFile
 let mongoose
 let mysql
 let mysqlConnection
 
-switch(process.env.DB)
-{
-    case "mongodb":
-        mongoose = require("mongoose")
-        break;
-    case "mysql":
-        mysql = require("mysql2")
-        mysqlConnection = mysql.createConnection({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
-        mysqlConnection.connect()
-        break;
-}
-
+/**
+ * Provides functions for working with the specified database.
+ */
 class db
 {
-    constructor()
+    constructor(db)
     {
-        
+        switch(db)
+        {
+            case "mongodb":
+                Account = require("./models/account")
+                Post = require("./models/post")
+                UploadedFile = require("./models/uploadedFile")
+                mongoose = require("mongoose")
+                break;
+            case "mysql":
+                mysql = require("mysql2")
+                mysqlConnection = mysql.createConnection({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
+                mysqlConnection.connect()
+                break;
+        }
     }
     
     /**
