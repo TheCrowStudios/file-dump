@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File dump</title>
+    <title>File Dump <%= account.username %></title>
     <link rel="stylesheet" href="/style.css">
     <link rel="icon" href="/directory_open_file_mydocs-4.png">
 </head>
@@ -16,13 +16,10 @@
         <% if (user) { %>
             <% if (user.id === account.id) { %>
                 <a href="/post">Create a post</a>
+                <form action="/login?_method=DELETE" method="POST">
+                    <button class="linkButton">Logout</button>
+                </form>
             <% } %>
-        <% } %>
-
-        <% if (user && user.id === account.id) { %>
-            <form action="/login?_method=DELETE", method="POST">
-                <button>Logout</button>
-            </form>
         <% } %>
     </div>
     
@@ -46,7 +43,7 @@
         <div>
             About:
             <div>
-                <%= account.about %>
+                <pre><%= account.about %></pre>
             </div>
         </div>
     </div>

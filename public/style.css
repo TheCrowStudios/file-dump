@@ -1,3 +1,13 @@
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #111111;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #222222;
+}
+
 body {
     background: #323232;
     color: #ffffff;
@@ -133,6 +143,20 @@ button:hover {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.linkButton {
+    border: none;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+    color: deepskyblue;
+    text-decoration: none;
+    font-size: large;
+}
+
+.linkButton:hover {
+    color: beige;
+    text-decoration: underline;
 }
 
 #account {

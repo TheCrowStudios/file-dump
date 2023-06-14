@@ -453,6 +453,11 @@ app.get("/about", (req, res) => {
     res.render("about.ejs")
 })
 
+app.get("/rules", (req, res, next) => {
+    CreateLog(req, `GET request to /rules`)
+    res.render("rules.ejs")
+})
+
 function CreateLogFileDump(req, text)
 {
     let log = `${(new Date()).toLocaleString()} File Dump ${req.ip} ${req.session.account ? req.session.account.username : "Not logged in"} ${text}`
