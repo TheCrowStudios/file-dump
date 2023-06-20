@@ -26,7 +26,7 @@ app.use(methodOverride("_method"))
 app.use(session({ secret: "I like boys uwu", store: sessionStore, resave: false, saveUninitialized: false }))
 app.use(fileUpload({ limits: { fileSize: 4000 * 1024 * 1024 }, limitHandler: (req, res, next) => {
     CreateLog(req, `Could not upload file. File too big`)
-} }))
+}, createParentPath: true }))
 app.use((req, res, next) => {
     if (req.session.account)
     {
@@ -191,7 +191,7 @@ app.get("/post", async (req, res) => {
     let error
     let canPost = true
 
-    if (timeFromLastPost < timeBetweenPosts && !req.session.admin)
+    if (timeFromLastPost < timeBetweenPosts && !req.session.account.admin)
     {
         error = `Calm down. You must wait ${timeBetweenPosts - timeFromLastPost} seconds before being able to post again`
         canPost = false
