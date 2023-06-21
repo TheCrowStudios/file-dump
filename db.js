@@ -202,7 +202,7 @@ class db
      * @param {Number} userId The id of the user account from which to get posts.
      * @returns Object containing the retrieved posts.
      */
-    async getPosts(userId, start, rows)
+    async getPosts(userId, sort, start, rows)
     {
         if (mongoose)
         {
@@ -218,10 +218,10 @@ class db
         {
             if (userId)
             {
-                return (await mysqlQueryWrapper("SELECT * FROM posts WHERE userId = ? ORDER BY created DESC", userId)).results
+                return (await mysqlQueryWrapper(`SELECT * FROM posts WHERE userId = ? ORDER BY ${sort} DESC`, [ userId ])).results
             }
             
-            return (await mysqlQueryWrapper("SELECT p.*, a.username, (SELECT COUNT(*) FROM postFiles WHERE postId = p.id) files FROM posts p INNER JOIN accounts a ON p.userId = a.id ORDER BY created DESC LIMIT ?, ?", [start, rows])).results
+            return (await mysqlQueryWrapper(`SELECT p.*, a.username, (SELECT COUNT(*) FROM postFiles WHERE postId = p.id) files FROM posts p INNER JOIN accounts a ON p.userId = a.id ORDER BY ${sort} DESC LIMIT ?, ?`, [start, rows])).results
         }
     }
 

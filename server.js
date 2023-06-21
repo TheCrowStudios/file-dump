@@ -49,7 +49,8 @@ app.get("/", async (req, res) => {
 
     CreateLog(req, `GET request to page ${page} /`)
     
-    let posts = await db.getPosts(null, page * maxPostsPerPage - maxPostsPerPage, maxPostsPerPage)
+    let sort = GetSortFromQuery(req.query.sort)
+    let posts = await db.getPosts(null, sort, page * maxPostsPerPage - maxPostsPerPage, maxPostsPerPage)
 
     if (posts.length === 0 && page !== 1)
     {
@@ -59,7 +60,7 @@ app.get("/", async (req, res) => {
 
     let maxPage = Math.ceil((await db.getPostCount()) / maxPostsPerPage)
     
-    res.render("index.ejs", { posts: posts, user: req.session.account, page: page, maxPage: maxPage })
+    res.render("index.ejs", { posts: posts, user: req.session.account, sort: sort, page: page, maxPage: maxPage })
 })
 
 app.post("/", async (req, res) => {
@@ -352,9 +353,10 @@ app.get("/user/:account", async (req, res) => {
         return
     }
 
-    let posts = await db.getPosts(account.id)
+    let sort = GetSortFromQuery(req.query.sort)
+    let posts = await db.getPosts(account.id, sort)
 
-    res.render("account.ejs", { account: account, posts: posts, user: req.session.account })
+    res.render("account.ejs", { account: account, posts: posts, user: req.session.account, sort: sort })
 })
 
 app.get("/user/:account/edit", async (req, res) => {
@@ -457,6 +459,23 @@ app.get("/rules", (req, res, next) => {
     CreateLog(req, `GET request to /rules`)
     res.render("rules.ejs")
 })
+
+function GetSortFromQuery(query)
+{
+    let sort = "created"
+    
+    switch (query)
+    {
+        case "created":
+            sort = "created"
+            break
+        case "views":
+            sort = "views"
+            break
+    }
+
+    return sort
+}
 
 function CreateLogFileDump(req, text)
 {

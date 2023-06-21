@@ -42,7 +42,7 @@ form > div > input {
 button {
     background-color: #323232;
     color: #ffffff;
-    padding: 10px 20px 10px 20px;
+    padding: 5px 20px 5px 20px;
     border-color: #ffffff;
     border-style: ridge;
     border-width: 1px;
@@ -50,6 +50,7 @@ button {
 
 button:hover {
     background-color: #424242;
+    cursor: pointer;
 }
 
 #posts, #postFiles {
@@ -145,6 +146,22 @@ button:hover {
     justify-content: space-between;
 }
 
+#sortForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 100px;
+    margin-top: 20px;
+}
+
+#sortForm > div {
+    display: flex;
+    flex-direction: row;
+}
+
+#sortForm > div > select {
+    margin-right: 5px;
+}
+
 .linkButton {
     border: none;
     padding: 0px;
@@ -157,6 +174,11 @@ button:hover {
 .linkButton:hover {
     color: beige;
     text-decoration: underline;
+}
+
+select {
+    background-color: #323232;
+    color: #ffffff;
 }
 
 #account {

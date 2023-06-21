@@ -1,0 +1,11 @@
+<form action="" method="GET" id="sortForm">
+    <label for="sort">Sort posts</label>
+    <div>
+        <select name="sort" id="sort">
+            <option value="created" <% if (sort === "created") { %> <%= "selected" %> <% } %>>Newest</option>
+            <option value="views" <% if (sort === "views") { %> <%= "selected" %> <% } %>>Views</option>
+        </select>
+
+        <button>Sort</button>
+    </div>
+</form>
