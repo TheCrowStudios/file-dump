@@ -15,7 +15,7 @@ body {
     margin: auto;
     margin-bottom: 200px;
     font-family: 'Courier New', Courier, monospace;
-    padding: 5px;
+    padding: 0px 8px 0px 8px;
 }
 
 h1 {
@@ -183,4 +183,54 @@ select {
 
 #account {
     float: right;
+}
+
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+#comments {
+    margin-top: 80px;
+    max-width: 100%;
+}
+
+#createComment {
+    
+}
+
+#createComment > form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#createComment > form > textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    background-color: #424242;
+    color: #ffffff;
+}
+
+#createComment > form > button {
+    align-self: flex-end;
+}
+
+#postComments {
+    margin-top: 20px;
+}
+
+.comment {
+    margin-top: 8px;
+}
+
+.comment > a {
+    font-size: medium;
+}
+
+.comment > pre {
+    font-family: inherit;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }

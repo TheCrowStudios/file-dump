@@ -204,19 +204,81 @@ app.get("/post", async (req, res) => {
 app.get("/post/:post", async (req, res) => {
     CreateLog(req, `GET request to /post/${req.params.post}`)
 
-    let post = await db.getPostById(req.params.post)
+    db.increasePostViews(req.params.post)
+    renderPost(req, res)
+})
 
-    if (!post)
+app.post("/post/:post", async (req, res) => {
+    CreateLog(req, `POST request to /post/${req.params.post}`)
+
+    if (!req.session.account)
     {
-        CreateLog(req, `Could not find post with id ${req.params.id}`)
-        res.redirect("/")
+        CreateLog(req, `Could not create comment. Must be logged in.`)
+        comments = await db.getComments(req.params.post)
+        renderPost(req, res)
         return
     }
 
-    let files = await db.getPostFiles(req.params.post)
-    db.increasePostViews(post.id)
+    if (!req.body.comment)
+    {
+        CreateLog(req, `Could not create comment. No comment.`)
+        comments = await db.getComments(req.params.post)
+        renderPost(req, res)
+        return
+    }
 
-    res.render("view.ejs", { post: post, files: files })
+    if (req.body.comment.length > 2048)
+    {
+        CreateLog(req, `Could not create comment. Comment must not be longer than 2048 characters.`)
+        comments = await db.getComments(req.params.post)
+        renderPost(req, res)
+        return
+    }
+
+    if ((await db.getAccountTimeFromLastComment(req.session.account.id)) < process.env.TIMEBETWEENCOMMENTS)
+    {
+        CreateLog(req, `Could not create comment. Must wait between comments.`)
+        comments = await db.getComments(req.params.post)
+        renderPost(req, res)
+        return
+    }
+    
+    await db.createComment(req.body.comment, req.params.post, req.session.account.id)
+    comments = await db.getComments(req.params.post)
+    renderPost(req, res)
+    
+    //res.redirect(`/post/${req.params.post}`)
+})
+
+app.delete("/post/:post/comment/:comment", async (req, res) => {
+    CreateLog(req, `DELETE request to /post/${req.params.post}/comment/${req.params.comment}`)
+    
+    if (!req.session.account)
+    {
+        CreateLog(req, `Could not delete comment. Not authorized`)
+        res.redirect(`/post/${req.params.post}`)
+        return
+    }
+
+    let comment = await db.getCommentById(req.params.comment)
+
+    if (!comment)
+    {
+        CreateLog(req, `Post ${req.params.id} does not exist`)
+        res.redirect(`/post/${req.params.post}`)
+    }
+
+    if (!req.session.account.admin && req.session.account.id !== comment.userId)
+    {
+        CreateLog(req, `Could not delete post. Not authorized`)
+        res.redirect(`/post/${req.params.post}`)
+        return
+    }
+
+    await db.deleteComment(req.params.comment)
+    
+    CreateLog(req, `Comment ${req.params.comment} deleted`)
+    res.redirect(`/post/${req.params.post}`)
 })
 
 app.get("/login", (req, res) => {
@@ -420,7 +482,7 @@ app.post("/user/:account/edit", async (req, res) => {
 })
 
 app.delete("/post/:id", async (req, res) => {
-    CreateLog(req, `DELETE request to /posts/${req.params.id}`)
+    CreateLog(req, `DELETE request to /post/${req.params.id}`)
     
     if (!req.session.account)
     {
@@ -459,6 +521,37 @@ app.get("/rules", (req, res, next) => {
     CreateLog(req, `GET request to /rules`)
     res.render("rules.ejs")
 })
+
+async function renderPost(req, res)
+{
+    let post = await db.getPostById(req.params.post)
+
+    if (!post)
+    {
+        CreateLog(req, `Could not find post with id ${req.params.post}`)
+        res.redirect("/")
+        return
+    }
+
+    let files = await db.getPostFiles(req.params.post)
+    let comments = await db.getComments(req.params.post)
+    
+    let commentMessage = ""
+    let canComment = true
+
+    if (req.session.account)
+    {
+        let timeFromLastComment = await db.getAccountTimeFromLastComment(req.session.account.id)
+
+        if (timeFromLastComment < process.env.TIMEBETWEENCOMMENTS)
+        {
+            commentMessage = `You must wait ${process.env.TIMEBETWEENCOMMENTS - timeFromLastComment} seconds before commenting again.`
+            canComment = false
+        }
+    }
+
+    res.render("view.ejs", { post: post, files: files, user: req.session.account, comments: comments, commentMessage: commentMessage, canComment: canComment })
+}
 
 function GetSortFromQuery(query)
 {

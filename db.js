@@ -23,7 +23,9 @@ class db
             case "mysql":
                 mysql = require("mysql2")
                 mysqlConnection = mysql.createConnection({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
-                mysqlConnection.connect()
+                mysqlConnection.connect((err) => {
+                    if (err) console.log(err)
+                })
                 break;
         }
     }
@@ -307,6 +309,49 @@ class db
         if (mysqlConnection)
         {
             return mysqlQueryWrapper("DELETE FROM posts WHERE id = ?", id)
+        }
+    }
+
+    async getComments(postId)
+    {
+        if (mysqlConnection)
+        {
+            return (await mysqlQueryWrapper("SELECT c.*, a.username FROM comments c INNER JOIN accounts a ON a.id = c.userId WHERE c.postId = ? ORDER BY created DESC", postId)).results
+        }
+    }
+
+    async getCommentById(id)
+    {
+        if (mysqlConnection)
+        {
+            return (await mysqlQueryWrapper("SELECT * FROM comments WHERE id = ?", id)).results[0]
+        }
+    }
+    
+    async createComment(comment, postId, userId)
+    {
+        if (mysqlConnection)
+        {
+            return mysqlQueryWrapper("INSERT INTO comments SET ?", { comment: comment, postId: postId, userId: userId })
+        }
+    }
+    
+    async deleteComment(id)
+    {
+        if (mysqlConnection)
+        {
+            return mysqlQueryWrapper("DELETE FROM comments WHERE id = ?", id)
+        }
+    }
+
+    async getAccountTimeFromLastComment(id)
+    {
+        if (mysqlConnection)
+        {
+            let time = (await mysqlQueryWrapper("SELECT TIMESTAMPDIFF(SECOND, (SELECT MAX(created) FROM comments WHERE userId = ?), ?) time", [id, mysql.raw("CURRENT_TIMESTAMP()")])).results[0].time
+
+            if (time === null) return 9999
+            return time
         }
     }
 

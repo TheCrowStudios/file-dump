@@ -50,6 +50,48 @@
         </div>
     <% } %>
 
+    <div id="comments">
+        Comments
+    
+    <div id="createComment">
+        <% if (user) { %>
+            <% if (canComment) { %>
+                <form action="" method="POST">
+                    <textarea required name="comment" id="comment" cols="30" rows="10" maxlength="2048" placeholder="Comment on post."></textarea>
+                    <button>Post comment</button>
+                </form>
+            <% } %>
+        <% } else { %>
+            <a href="/login">Login</a>
+            or
+            <a href="/register">register</a>
+            to post comments.
+        <% } %>
+
+        <%= commentMessage %>
+    </div>
+
+    <div id="postComments">
+        <% for (let i = 0; i < comments.length; i++) { %>
+            <div class="comment">
+                <a href="/user/<%= comments[i].username %>"><%= comments[i].username %></a>
+                <div class="textGrayed">
+                    <%= comments[i].created.toLocaleString() %>
+                </div>
+                <pre><%= comments[i].comment %></pre>
+                
+                <% if (user) { %>
+                    <% if (user.id === comments[i].userId || user.admin) { %>
+                        <form action="/post/<%= post.id %>/comment/<%= comments[i].id %>?_method=DELETE" method="POST" class="deletePostForm">
+                            <button type="submit" class="deletePost">Delete</button>
+                        </form>
+                    <% } %>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+    </div>
+
     <%- include("_information.ejs") %>
 </body>
 </html>
