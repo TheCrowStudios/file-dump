@@ -12,30 +12,19 @@
     <h1>Register</h1>
     <form enctype="multipart/form-data" action="/register" method="POST" id="register" class="formCenter">
         <label for="username">Username</label>
-
-        <div>
-            <input required type="text" name="username" id="username" maxlength="20" value="<%= account.username %>">
-        </div>
+        <input required type="text" name="username" id="username" maxlength="20" value="<%= account.username %>">
 
         <label for="password">Password</label>
-
-        <div>
-            <input required type="password" name="password" id="password" maxlength="100" value="<%= account.password %>">
-        </div>
+        <input required type="password" name="password" id="password" maxlength="100" value="<%= account.password %>">
 
         <label for="confirmPassword">Confirm password</label>
-        
-        <div>
-            <input required type="password" name="confirmPassword" id="confirmPassword" maxlength="100" value="<%= account.confirmPassword %>">
-        </div>
+        <input required type="password" name="confirmPassword" id="confirmPassword" maxlength="100" value="<%= account.confirmPassword %>">
         
         <div>
             <%= error %>
         </div>
 
-        <div>
-            <button type="submit">Register</button>
-        </div>
+        <button type="submit">Register</button>
 
         <a href="/login">Login</a>
     </form>

@@ -12,24 +12,16 @@
     <h1>Login</h1>
     <form enctype="multipart/form-data" action="/login" method="POST" id="login" class="formCenter">
         <label for="username">Username</label>
-        
-        <div>
-            <input required type="text" name="username" id="username", maxlength="100">
-        </div>
+        <input required type="text" name="username" id="username" maxlength="100">
 
         <label for="password">Password</label>
-        
-        <div>
-            <input required type="password" name="password" id="password", maxlength="100">
-        </div>
+        <input required type="password" name="password" id="password" maxlength="100">
         
         <div>
             <%= error %>
         </div>
 
-        <div>
-            <button type="submit">Login</button>
-        </div>
+        <button type="submit">Login</button>
 
         <a href="/register">Register</a>
     </form>

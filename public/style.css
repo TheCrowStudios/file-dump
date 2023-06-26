@@ -35,7 +35,7 @@ a:hover {
     text-decoration: underline;
 }
 
-form > div > input {
+input {
     margin-bottom: 10px;
 }
 
@@ -75,10 +75,6 @@ button:hover {
 
 .postActions {
     font-size: small;
-}
-
-.deletePostForm {
-    
 }
 
 .deletePost {
