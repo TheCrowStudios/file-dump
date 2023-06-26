@@ -19,14 +19,21 @@ class db
                 Post = require("./models/post")
                 UploadedFile = require("./models/uploadedFile")
                 mongoose = require("mongoose")
-                break;
+                break
             case "mysql":
-                mysql = require("mysql2")
-                mysqlConnection = mysql.createConnection({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
-                mysqlConnection.connect((err) => {
+                mysql = require("mysql")
+                mysqlConnection = mysql.createPool({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
+                mysqlConnection.getConnection((err, connection) => {
                     if (err) console.log(err)
                 })
-                break;
+                break
+            case "mysql2":
+                mysql = require("mysql2")
+                mysqlConnection = mysql.createPool({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
+                mysqlConnection.getConnection((err, connection) => {
+                    if (err) console.log(err)
+                })
+                break
         }
     }
     
