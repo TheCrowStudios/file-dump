@@ -51,7 +51,7 @@ class db
 
         if (mysqlConnection)
         {
-            return (await mysqlQueryWrapper("SELECT * FROM accounts WHERE id = ?", { id })).results[0]
+            return (await mysqlQueryWrapper("SELECT * FROM accounts WHERE id = ?", [ id ])).results[0]
         }
     }
 
@@ -70,6 +70,14 @@ class db
         if (mysqlConnection)
         {
             return (await mysqlQueryWrapper("SELECT * FROM accounts WHERE username = ?", username)).results[0]
+        }
+    }
+
+    async getAccountNotifications(id)
+    {
+        if (mysqlConnection)
+        {
+            return (await mysqlQueryWrapper("SELECT * FROM notifications WHERE userId = ?", [ id ])).results
         }
     }
 
@@ -419,6 +427,22 @@ class db
         if (mysqlConnection)
         {
             return this.updateAccount([{ lastOnline: mysql.raw("CURRENT_TIMESTAMP()") }, id])
+        }
+    }
+
+    async createNotification(userId, notificationId, link)
+    {
+        if (mysqlConnection)
+        {
+            return mysqlQueryWrapper("INSERT INTO notifications SET ? ON DUPLICATE KEY UPDATE count = count + 1", { userId, notificationId, link })
+        }
+    }
+
+    async deleteNotification(userId, link)
+    {
+        if (mysqlConnection)
+        {
+            return mysqlQueryWrapper("DELETE FROM notifications WHERE userId = ? link = ?", [ userId, link ])
         }
     }
 

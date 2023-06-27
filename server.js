@@ -13,6 +13,7 @@ const maxPostsPerPage = Number.parseInt(process.env.MAXPOSTSPERPAGE)
 const timeBetweenPosts = Number.parseInt(process.env.TIMEBETWEENPOSTS)
 const db = new (require("./db"))(process.env.DB)
 const sessionStore = new (require("express-mysql-session")(session))({ host: process.env.MYSQLURI, user: process.env.MYSQLUSER, password: process.env.MYSQLPASSWORD, database: process.env.MYSQLDBNAME })
+const notifications = require("./notifications")
 
 let CreateLog;
 
@@ -59,8 +60,11 @@ app.get("/", async (req, res) => {
     }
 
     let maxPage = Math.ceil((await db.getPostCount()) / maxPostsPerPage)
+
+    let userNotifications
+    if (req.session.account) userNotifications = await db.getAccountNotifications(req.session.account.id)
     
-    res.render("index.ejs", { posts: posts, user: req.session.account, sort: sort, page: page, maxPage: maxPage })
+    res.render("index.ejs", { posts: posts, user: req.session.account, notificationMessages: notifications.messages, userNotifications: userNotifications, sort: sort, page: page, maxPage: maxPage })
 })
 
 app.post("/", async (req, res) => {
@@ -205,6 +209,7 @@ app.get("/post/:post", async (req, res) => {
     CreateLog(req, `GET request to /post/${req.params.post}`)
 
     db.increasePostViews(req.params.post)
+    
     renderPost(req, res)
 })
 
@@ -214,7 +219,6 @@ app.post("/post/:post", async (req, res) => {
     if (!req.session.account)
     {
         CreateLog(req, `Could not create comment. Must be logged in.`)
-        comments = await db.getComments(req.params.post)
         renderPost(req, res)
         return
     }
@@ -222,7 +226,6 @@ app.post("/post/:post", async (req, res) => {
     if (!req.body.comment)
     {
         CreateLog(req, `Could not create comment. No comment.`)
-        comments = await db.getComments(req.params.post)
         renderPost(req, res)
         return
     }
@@ -230,7 +233,6 @@ app.post("/post/:post", async (req, res) => {
     if (req.body.comment.length > 2048)
     {
         CreateLog(req, `Could not create comment. Comment must not be longer than 2048 characters.`)
-        comments = await db.getComments(req.params.post)
         renderPost(req, res)
         return
     }
@@ -238,13 +240,16 @@ app.post("/post/:post", async (req, res) => {
     if ((await db.getAccountTimeFromLastComment(req.session.account.id)) < process.env.TIMEBETWEENCOMMENTS)
     {
         CreateLog(req, `Could not create comment. Must wait between comments.`)
-        comments = await db.getComments(req.params.post)
         renderPost(req, res)
         return
     }
+
+    let post = await db.getPostById(req.params.post)
     
     await db.createComment(req.body.comment, req.params.post, req.session.account.id)
-    comments = await db.getComments(req.params.post)
+
+    db.createNotification(post.userId, notifications.types.newComment, `/post/${req.params.post}`)
+    
     renderPost(req, res)
     
     //res.redirect(`/post/${req.params.post}`)
@@ -548,6 +553,8 @@ async function renderPost(req, res)
             commentMessage = `You must wait ${process.env.TIMEBETWEENCOMMENTS - timeFromLastComment} seconds before commenting again.`
             canComment = false
         }
+
+        db.deleteNotification(req.session.account.id, req.url)
     }
 
     res.render("view.ejs", { post: post, files: files, user: req.session.account, comments: comments, commentMessage: commentMessage, canComment: canComment })

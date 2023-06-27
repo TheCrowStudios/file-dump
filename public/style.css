@@ -230,3 +230,18 @@ pre {
     margin-top: 2px;
     margin-bottom: 2px;
 }
+
+#notifications > div {
+    position: absolute;
+    background-color: #424242;
+    visibility: hidden;
+    padding: 8px 2px 8px 2px;
+}
+
+#notifications:hover > div {
+    visibility: visible;
+}
+
+.notification {
+    
+}

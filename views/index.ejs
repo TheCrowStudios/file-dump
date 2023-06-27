@@ -16,6 +16,27 @@
         <a href="post">Create a post</a>
         <a href="/about" id="about">About</a>
         <% if (user) { %>
+            <div id="notifications">
+                <a href="/notifications" id="notificationsLink">
+                    Notifications
+                    <% if (userNotifications.length > 0) { %>
+                        (<%= userNotifications.length %>)
+                    <% } %>
+                </a>
+
+                <div>
+                    <% if (userNotifications.length === 0) { %>
+                        No new notifications.
+                    <% } %>
+
+                    <% for (let i = 0; i < userNotifications.length; i++) { %>
+                        <div class="notification">
+                            <a href="<%= userNotifications[i].link %>"><%= notificationMessages[userNotifications[i].notificationId] %></a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            
             <a href="/user/<%= user.username %>" id="account"><%= user.username %></a>
         <% } else { %>
             <a href="login" id="account">Login</a>
