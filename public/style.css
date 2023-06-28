@@ -12,6 +12,7 @@ body {
     background: #323232;
     color: #ffffff;
     max-width: 1000px;
+    min-height: 100vh;
     margin: auto;
     margin-bottom: 200px;
     font-family: 'Courier New', Courier, monospace;
@@ -37,6 +38,17 @@ a:hover {
 
 input {
     margin-bottom: 10px;
+    padding: 2px;
+    background-color: #424242;
+    color: #ffffff;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #767676;
+}
+
+input[type="file"] {
+    background-color: inherit;
+    border-style: none;
 }
 
 button {
@@ -99,6 +111,9 @@ button:hover {
 
 #information {
     margin-top: 20px;
+    margin-bottom: 8px;
+    position: sticky;
+    top: 90vh;
     text-align: center;
 }
 
@@ -160,6 +175,7 @@ button:hover {
 }
 
 .linkButton {
+    background-color: inherit;
     border: none;
     padding: 0px;
     font-family: 'Courier New', Courier, monospace;
@@ -169,6 +185,7 @@ button:hover {
 }
 
 .linkButton:hover {
+    background-color: inherit;
     color: beige;
     text-decoration: underline;
 }
@@ -187,13 +204,17 @@ pre {
     overflow-wrap: break-word;
 }
 
+textarea {
+    padding: 2px;
+    background-color: #424242;
+    color: #ffffff;
+    border-width: 1px;
+    border-color: #767676;
+}
+
 #comments {
     margin-top: 80px;
     max-width: 100%;
-}
-
-#createComment {
-    
 }
 
 #createComment > form {
@@ -206,8 +227,6 @@ pre {
 #createComment > form > textarea {
     width: 100%;
     margin-bottom: 10px;
-    background-color: #424242;
-    color: #ffffff;
 }
 
 #createComment > form > button {
@@ -232,17 +251,22 @@ pre {
     margin-bottom: 2px;
 }
 
-#notifications > div {
+#notificationsMenu {
     position: absolute;
     background-color: #424242;
     visibility: hidden;
     padding: 8px 2px 8px 2px;
 }
 
-#notifications:hover > div {
+#notifications:hover > #notificationsMenu {
     visibility: visible;
 }
 
-.notification {
-    
+#notifications > .notification {
+    background-color: #424242;
+    margin-bottom: 8px;
+    padding: 20px 10px 20px 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #767676;
 }

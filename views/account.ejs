@@ -9,8 +9,7 @@
     <link rel="icon" href="/directory_open_file_mydocs-4.png">
 </head>
 <body>
-    <% postOpen = false %>
-    <%- include("_title.ejs") %>
+    <%- include("_title.ejs", { postOpen: false }) %>
     <h2><%= account.username %></h2>
     <div id="toolbar">
         <% if (user) { %>

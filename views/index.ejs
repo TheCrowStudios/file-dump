@@ -9,8 +9,7 @@
     <link rel="icon" href="/directory_open_file_mydocs-4.png">
 </head>
 <body>
-    <% postOpen = false %>
-    <%- include("_title.ejs") %>
+    <%- include("_title.ejs", { postOpen: false }) %>
     <h2>Dump all your files!</h2>
     <div id="toolbar">
         <a href="post">Create a post</a>
@@ -24,14 +23,14 @@
                     <% } %>
                 </a>
 
-                <div>
+                <div id="notificationsMenu">
                     <% if (userNotifications.length === 0) { %>
                         No new notifications.
                     <% } %>
 
                     <% for (let i = 0; i < userNotifications.length; i++) { %>
                         <div class="notification">
-                            <a href="<%= userNotifications[i].link %>"><%= notificationMessages[userNotifications[i].notificationId] %></a>
+                            <a href="<%= userNotifications[i].link %>"><%= notificationMessages[userNotifications[i].notificationId] %> (<%= userNotifications[i].count %>)</a>
                         </div>
                     <% } %>
                 </div>
