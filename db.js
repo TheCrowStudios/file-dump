@@ -442,7 +442,7 @@ class db
     {
         if (mysqlConnection)
         {
-            return mysqlQueryWrapper("DELETE FROM notifications WHERE userId = ? link = ?", [ userId, link ])
+            return mysqlQueryWrapper("DELETE FROM notifications WHERE userId = ? AND link = ?", [ userId, link ])
         }
     }
 
