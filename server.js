@@ -517,6 +517,50 @@ app.delete("/post/:id", async (req, res) => {
     res.redirect("/")
 })
 
+app.get("/notifications", async (req, res) => {
+    CreateLog(req, `GET request to /notifications`)
+
+    if (!req.session.account)
+    {
+        res.redirect("/login")
+        return
+    }
+
+    let userNotifications = await db.getAccountNotifications(req.session.account.id)
+
+    res.render("notifications.ejs", { notificationMessages: notifications.messages, userNotifications: userNotifications })
+})
+
+app.delete("/notifications/:id", async (req, res) => {
+    CreateLog(req, `DELETE request to /notifications`)
+
+    if (!req.session.account)
+    {
+        res.redirect("/login")
+        return
+    }
+
+    let notificationId = Number.parseInt(req.params.id)
+
+    if (notificationId === null)
+    {
+        res.redirect("/notifications")
+        return
+    }
+
+    let userNotifications = await db.getAccountNotifications(req.session.account.id)
+
+    if (userNotifications.length >= notificationId.length)
+    {
+        res.redirect("/login")
+        return
+    }
+
+    await db.deleteNotification(req.session.account.id, userNotifications[notificationId].link)
+
+    res.redirect("/notifications")
+})
+
 app.get("/about", (req, res) => {
     CreateLog(req, `GET request to /about`)
     res.render("about.ejs")

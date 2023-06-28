@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Dump notifications</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/directory_open_file_mydocs-4.png">
+</head>
+<body>
+    <%- include("_title.ejs", { postOpen: false }) %>
+
+    <div id="notifications">
+        <% if (userNotifications.length === 0) { %>
+            No new notifications.
+        <% } %>
+
+        <% for (let i = 0; i < userNotifications.length; i++) { %>
+            <div class="notification">
+                <a href="<%= userNotifications[i].link %>"><%= notificationMessages[userNotifications[i].notificationId] %> (<%= userNotifications[i].count %>)</a>
+                <div class="textGrayed">
+                    <%= userNotifications[i].created.toLocaleString() %>
+                </div>
+
+                <form action="/notifications/<%= i %>?_method=DELETE" method="POST">
+                    <button class="linkButton">Clear</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include("_information.ejs") %>
+</body>
+</html>
