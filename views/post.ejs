@@ -9,7 +9,8 @@
     <link rel="icon" href="/directory_open_file_mydocs-4.png">
 </head>
 <body>
-    <h1>Create a post</h1>
+    <%- include("_title.ejs", { postOpen: false }) %>
+    <h2>Create a post</h2>
 
     <div>
         File limits: 4GB
@@ -44,5 +45,7 @@
     <% } else { %>
         <%= error %>
     <% } %>
+    
+    <%- include("_information.ejs") %>
 </body>
 </html>
